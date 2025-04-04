@@ -9,7 +9,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">La Playlita</a>
+            <a class="navbar-brand" href="{{ url('/') }}">La Playita</a>
         </div>
     </nav>
 

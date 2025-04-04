@@ -9,8 +9,7 @@ class ProductoController extends Controller
 {
     public function index()
     {
-        $productos = Producto::paginate(10); // Muestra 10 productos por página
-
+        $productos = Producto::paginate(5); // Cambia el número a lo que quieras
         return view('productos.index', compact('productos'));
     }
 

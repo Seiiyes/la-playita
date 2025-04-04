@@ -28,6 +28,7 @@
                         <td>{{ $producto->cantidad_stock }}</td>
                         <td class="text-center">
                             <a href="{{ route('productos.show', $producto->pk_id_producto) }}" class="btn btn-info btn-sm">👀 Ver</a>
+                            <a href="{{ route('productos.edit', $producto->pk_id_producto) }}" class="btn btn-warning btn-sm">✏️ Editar</a>
                             <form action="{{ route('productos.destroy', $producto->pk_id_producto) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
