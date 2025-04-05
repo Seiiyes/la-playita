@@ -5,7 +5,9 @@
     <h1 class="text-center my-4">📦 Productos</h1>
     
     <div class="d-flex justify-content-between mb-3">
+        
         <a href="{{ route('productos.create') }}" class="btn btn-primary">➕ Agregar Producto</a>
+         <a href="{{ route('categorias.create') }}" class="btn btn-primary">📂 Agregar Categoría</a>       
     </div>
 
     <div class="table-responsive">
@@ -27,8 +29,7 @@
                         <td>${{ number_format($producto->precio_unitario, 0, ',', '.') }}</td>
                         <td>{{ $producto->cantidad_stock }}</td>
                         <td class="text-center">
-                            <a href="{{ route('productos.show', $producto->pk_id_producto) }}" class="btn btn-info btn-sm">👀 Ver</a>
-                            <a href="{{ route('productos.edit', $producto->pk_id_producto) }}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                            <a href="{{ route('productos.edit', $producto->pk_id_producto) }}" class="btn btn-warning btn-sm">🛠️ Editar</a>
                             <form action="{{ route('productos.destroy', $producto->pk_id_producto) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
@@ -41,7 +42,6 @@
         </table>
     </div>
 
-    <!-- Paginación -->
     <div class="d-flex justify-content-center mt-4">
         {{ $productos->links() }}
     </div>
