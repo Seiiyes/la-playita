@@ -33,15 +33,38 @@
 
         <div class="mb-3">
             <label>Contraseña</label>
-            <input type="password" name="contrasena" class="form-control" required>
+            <div class="input-group">
+                <input type="password" name="contrasena" id="contrasena" class="form-control" required>
+                <button type="button" class="btn btn-outline-secondary" id="togglePassword">👁️</button>
+            </div>
         </div>
 
         <div class="mb-3">
             <label>Confirmar Contraseña</label>
-            <input type="password" name="contrasena_confirmation" class="form-control" required>
+            <div class="input-group">
+                <input type="password" name="contrasena_confirmation" id="contrasena_confirmation" class="form-control" required>
+                <button type="button" class="btn btn-outline-secondary" id="togglePasswordConfirm">👁️</button>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Registrarse</button>
+        <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url('/login') }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+        </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const input = document.getElementById('contrasena');
+        input.type = input.type === 'password' ? 'text' : 'password';
+        this.textContent = input.type === 'password' ? '👁️' : '🙈';
+    });
+
+    document.getElementById('togglePasswordConfirm').addEventListener('click', function () {
+        const input = document.getElementById('contrasena_confirmation');
+        input.type = input.type === 'password' ? 'text' : 'password';
+        this.textContent = input.type === 'password' ? '👁️' : '🙈';
+    });
+</script>
 @endsection
