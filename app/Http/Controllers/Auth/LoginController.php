@@ -10,29 +10,42 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
+
         return view('auth.login');
     }
 
     public function login(Request $request)
     {
-        // Validar los campos
-        $credentials = $request->validate([
-            'correo_u' => ['required', 'email'],
-            'contrasena' => ['required'],
-        ]);
+        $credentials = $request->only('correo_u', 'contrasena');
 
-        // Intentar autenticación
         if (Auth::attempt([
             'correo_u' => $credentials['correo_u'],
             'password' => $credentials['contrasena']
         ])) {
             $request->session()->regenerate();
-            return redirect()->intended('/'); // Redirigir al home o dashboard
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => route('home')
+                ]);
+            }
+
+            return redirect()->intended('/');
         }
 
-        // Si falla
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Correo o contraseña incorrectos.'
+            ]);
+        }
+
         return back()->withErrors([
-            'correo_u' => 'Las credenciales no coinciden.',
+            'correo_u' => 'Las credenciales no coinciden con nuestros registros.',
         ]);
     }
 
@@ -42,6 +55,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('home');
     }
 }

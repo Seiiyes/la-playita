@@ -39,7 +39,8 @@
         const passwordInput = document.getElementById('contrasena');
         const isPassword = passwordInput.getAttribute('type') === 'password';
         passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-        this.textContent = isPassword ? '🙈' : '👁️';
+        this.textContent = isPassword ? '🙈 Ocultar' : '👁️ Mostrar';
+
     });
     </script>
 

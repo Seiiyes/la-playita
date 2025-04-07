@@ -1,16 +1,20 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class RegistroController extends Controller
 {
     public function showRegistrationForm()
     {
+        if (Auth::check()) {
+            return redirect()->route('home'); // Redirigir si ya está logueado
+        }
+
         return view('auth.register');
     }
 
@@ -31,7 +35,7 @@ class RegistroController extends Controller
             'correo_u' => $request->correo_u,
             'contrasena' => bcrypt($request->contrasena),
             'estado_usuario' => 1,
-            'fk_id_roles' => 2, // Puedes asignar el rol predeterminado aquí
+            'fk_id_roles' => 2, // Rol por defecto
         ]);
 
         Auth::login($usuario);

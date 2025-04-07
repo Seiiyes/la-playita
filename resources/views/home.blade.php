@@ -1,39 +1,42 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container text-center">
-    <h1 class="mb-4">Bienvenido a La Playlita 🛍️</h1>
+@section('title', 'Inicio')
 
-    <div class="row justify-content-center">
-        <div class="col-md-4 mb-3">
-            <a href="{{ route('productos.index') }}" class="btn btn-outline-primary w-100 py-3">
-                📦 Gestionar Productos
-            </a>
-        </div>
-        <div class="col-md-4 mb-3">
-            <a href="{{ route('categorias.index') }}" class="btn btn-outline-success w-100 py-3">
-                🗂️ Gestionar Categorías
-            </a>
-        </div>
-        <div class="col-md-4 mb-3">
-            @guest
-                <a href="{{ route('login') }}" class="btn btn-outline-dark w-100 py-3">
-                    🔐 Iniciar Sesión
-                </a>
-            @else
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-danger w-100 py-3">🚪 Cerrar Sesión</button>
-                </form>
-            @endguest
-        </div>
-        @guest
-        <div class="col-md-4 mb-3">
-            <a href="{{ route('register') }}" class="btn btn-outline-secondary w-100 py-3">
-                📝 Registrarse
-            </a>
-        </div>
-        @endguest
+@section('content')
+<style>
+    .btn-home {
+        padding: 15px 25px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .btn-home:hover {
+        transform: scale(1.05);
+    }
+
+    .welcome-section {
+        margin-top: 100px;
+    }
+</style>
+
+<div class="container text-center welcome-section">
+    <h2 class="text-center">
+        Bienvenido a 
+        <span class="text-primary fw-bold">La Playita</span>
+        <img src="{{ asset('images/la-playita-logo.png') }}" alt="Logo" width="80" class="ms-1 align-middle rounded-circle shadow border border-dark">
+    </h2>
+
+    @auth
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+        <a href="{{ route('productos.index') }}" class="btn btn-outline-primary btn-home">
+            📦 Gestionar Productos
+        </a>
+        <a href="{{ route('categorias.index') }}" class="btn btn-outline-success btn-home">
+            📁 Gestionar Categorías
+        </a>
     </div>
+    @endauth
 </div>
 @endsection

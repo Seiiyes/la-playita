@@ -1,49 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
-    <h2>Registro</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📝 Registro de Usuario</h2>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>⚠️ {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <div class="mb-3">
-            <label>Primer Nombre</label>
-            <input type="text" name="p_nombre_u" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Segundo Nombre</label>
-            <input type="text" name="s_nombre_u" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Primer Apellido</label>
-            <input type="text" name="p_apellido_u" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Segundo Apellido</label>
-            <input type="text" name="s_apellido_u" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Correo</label>
-            <input type="email" name="correo_u" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Contraseña</label>
-            <div class="input-group">
-                <input type="password" name="contrasena" id="contrasena" class="form-control" required>
-                <button type="button" class="btn btn-outline-secondary" id="togglePassword">👁️</button>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="p_nombre_u" class="form-label">Primer Nombre</label>
+                <input type="text" name="p_nombre_u" id="p_nombre_u" class="form-control" required value="{{ old('p_nombre_u') }}">
             </div>
-        </div>
 
-        <div class="mb-3">
-            <label>Confirmar Contraseña</label>
-            <div class="input-group">
-                <input type="password" name="contrasena_confirmation" id="contrasena_confirmation" class="form-control" required>
-                <button type="button" class="btn btn-outline-secondary" id="togglePasswordConfirm">👁️</button>
+            <div class="col-md-6 mb-3">
+                <label for="s_nombre_u" class="form-label">Segundo Nombre</label>
+                <input type="text" name="s_nombre_u" id="s_nombre_u" class="form-control" value="{{ old('s_nombre_u') }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="p_apellido_u" class="form-label">Primer Apellido</label>
+                <input type="text" name="p_apellido_u" id="p_apellido_u" class="form-control" required value="{{ old('p_apellido_u') }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="s_apellido_u" class="form-label">Segundo Apellido</label>
+                <input type="text" name="s_apellido_u" id="s_apellido_u" class="form-control" value="{{ old('s_apellido_u') }}">
+            </div>
+
+            <div class="col-12 mb-3">
+                <label for="correo_u" class="form-label">Correo Electrónico</label>
+                <input type="email" name="correo_u" id="correo_u" class="form-control" required value="{{ old('correo_u') }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="contrasena" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <input type="password" name="contrasena" id="contrasena" class="form-control" required>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">👁️</button>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="contrasena_confirmation" class="form-label">Confirmar Contraseña</label>
+                <div class="input-group">
+                    <input type="password" name="contrasena_confirmation" id="contrasena_confirmation" class="form-control" required>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePasswordConfirm">👁️</button>
+                </div>
             </div>
         </div>
 

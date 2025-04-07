@@ -7,67 +7,66 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $categorias = Categoria::all();
         return view('categorias.index', compact('categorias'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('categorias.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'categoria' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]); 
-        Categoria::create($request->all());
+            'pk_id_categoria' => 'required|integer|unique:tbl_categorias,pk_id_categoria',
+            'categoria' => 'required|string|max:25',
+        ], [
+            'pk_id_categoria.required' => 'El campo ID de categoría es obligatorio.',
+            'pk_id_categoria.integer' => 'El ID de categoría debe ser un número entero.',
+            'pk_id_categoria.unique' => '⚠️ Ya existe una categoría con ese ID.',
+            'categoria.required' => 'El nombre de la categoría es obligatorio.',
+            'categoria.max' => 'El nombre de la categoría no puede tener más de 25 caracteres.',
+        ]);
 
-        return redirect()->route('categorias.index')->with('success', '¡Categoría agregada!');
+        Categoria::create([
+            'pk_id_categoria' => $request->pk_id_categoria,
+            'categoria' => $request->categoria,
+        ]);
 
+        return redirect()->route('categorias.index')->with('success', '¡Categoría agregada correctamente!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Categoria $categoria)
+    public function edit($id)
     {
-        //
+        $categoria = Categoria::findOrFail($id);
+        return view('categorias.edit', compact('categoria'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Categoria $categoria)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'categoria' => 'required|string|max:25',
+        ], [
+            'categoria.required' => 'El nombre de la categoría es obligatorio.',
+            'categoria.max' => 'El nombre de la categoría no puede tener más de 25 caracteres.',
+        ]);
+
+        $categoria = Categoria::findOrFail($id);
+        $categoria->update([
+            'categoria' => $request->categoria
+        ]);
+
+        return redirect()->route('categorias.index')->with('success', '¡Categoría actualizada!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Categoria $categoria)
+    public function destroy($id)
     {
-        //
-    }
+        $categoria = Categoria::findOrFail($id);
+        $categoria->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Categoria $categoria)
-    {
-        //
+        return redirect()->route('categorias.index')->with('success', 'Categoría eliminada');
     }
 }
