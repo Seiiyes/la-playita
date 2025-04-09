@@ -1,14 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.app') 
 
 @section('content')
 <div class="container">
     <h1 class="text-center my-4">📦 Productos</h1>
     
     <div class="d-flex justify-content-between mb-3">
-        
         <a href="{{ route('productos.create') }}" class="btn btn-primary">➕ Agregar Producto</a>
-         <a href="{{ route('categorias.create') }}" class="btn btn-primary">📂 Agregar Categoría</a>       
+        <a href="{{ route('categorias.create') }}" class="btn btn-primary">📂 Agregar Categoría</a>       
     </div>
+
+    <!-- Barra de búsqueda -->
+    <form action="{{ route('productos.index') }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar producto..." value="{{ request('search') }}">
+            <button class="btn btn-outline-primary" type="submit">🔍 Buscar</button>
+        </div>
+    </form>
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -22,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($productos as $producto)
+                @forelse ($productos as $producto)
                     <tr>
                         <td>{{ $producto->pk_id_producto }}</td>
                         <td>{{ $producto->nombre_producto }}</td>
@@ -37,13 +44,17 @@
                             </form>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">No se encontraron productos.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 
     <div class="d-flex justify-content-center mt-4">
-        {{ $productos->links() }}
+        {{ $productos->appends(['search' => request('search')])->links() }}
     </div>
 </div>
 @endsection

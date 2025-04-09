@@ -11,22 +11,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tbl_producto', function (Blueprint $table) {
-            $table->integer('pk_id_producto')->primary(); // Quitar si debe ser autoincremental
-            // $table->id('pk_id_producto'); // Usar si es autoincremental
-            
+            $table->increments('pk_id_producto')->primary(); 
             $table->string('nombre_producto', 30);
-            $table->decimal('precio_unitario', 10, 2); // Se recomienda precisión decimal
-            $table->decimal('IVA', 5, 2); // Mejor precisión
+            $table->decimal('precio_unitario', 10, 2); 
+            $table->decimal('IVA', 5, 2); 
             $table->integer('cantidad_stock');
-            $table->date('fcaducidad');
+
+            $table->date('fcaducidad')->nullable();
+
             $table->string('descripcion', 50);
-            
-            // Definir clave foránea correctamente
+
             $table->integer('fk_id_categoria')->index();
             $table->foreign('fk_id_categoria')
                   ->references('pk_id_categoria')
                   ->on('tbl_categorias')
-                  ->onDelete('cascade'); // Elimina productos si se borra la categoría
+                  ->onDelete('cascade'); 
         });
     }
 

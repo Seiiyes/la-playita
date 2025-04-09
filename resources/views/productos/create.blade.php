@@ -76,7 +76,7 @@
                         <label for="fcaducidad" class="form-label">Fecha de caducidad</label>
                         <input type="date" name="fcaducidad" id="fcaducidad"
                                class="form-control @error('fcaducidad') is-invalid @enderror"
-                               value="{{ old('fcaducidad') }}" required>
+                               value="{{ old('fcaducidad') }}" >
                         @error('fcaducidad')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

@@ -8,12 +8,17 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::paginate(10); // Cambia el número a lo que quieras
+        $search = $request->input('search');
+    
+        $productos = Producto::when($search, function ($query, $search) {
+            return $query->where('nombre_producto', 'like', "%{$search}%");
+        })->paginate(10);
+    
         return view('productos.index', compact('productos'));
     }
-
+    
     public function create()
     {
         $categorias = Categoria::all();
@@ -23,19 +28,28 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre_producto' => 'required',
-            'descripcion' => 'nullable|string',
+            'nombre_producto' => 'required|string|max:30',
+            'descripcion' => 'nullable|string|max:50',
             'precio_unitario' => 'required|numeric',
             'IVA' => 'required|numeric',
             'cantidad_stock' => 'required|integer',
-            'fcaducidad' => 'required|date',
+            'fcaducidad' => 'nullable|date',
             'fk_id_categoria' => 'required|exists:tbl_categorias,pk_id_categoria',
         ]);
-
-        Producto::create($request->all());
+    
+        Producto::create($request->only([
+            'nombre_producto',
+            'descripcion',
+            'precio_unitario',
+            'IVA',
+            'cantidad_stock',
+            'fcaducidad',
+            'fk_id_categoria',
+        ]));
+    
         return redirect()->route('productos.index')->with('success', 'Producto creado con éxito');
     }
-
+    
     public function show($id)
     {
         $producto = Producto::findOrFail($id);
@@ -54,19 +68,28 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $producto)
     {
         $request->validate([
-            'nombre_producto' => 'required',
-            'descripcion' => 'nullable|string',
+            'nombre_producto' => 'required|string|max:30',
+            'descripcion' => 'nullable|string|max:50',
             'precio_unitario' => 'required|numeric',
             'IVA' => 'required|numeric',
             'cantidad_stock' => 'required|integer',
-            'fcaducidad' => 'required|date',
+            'fcaducidad' => 'nullable|date',
             'fk_id_categoria' => 'required|exists:tbl_categorias,pk_id_categoria',
         ]);
     
-        $producto->update($request->all());
+        $producto->update($request->only([
+            'nombre_producto',
+            'descripcion',
+            'precio_unitario',
+            'IVA',
+            'cantidad_stock',
+            'fcaducidad',
+            'fk_id_categoria',
+        ]));
     
         return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito');
     }
+    
     
 
     public function destroy($id)

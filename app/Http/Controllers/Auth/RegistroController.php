@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
+use App\Models\Rol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,8 @@ class RegistroController extends Controller
             return redirect()->route('home'); // Redirigir si ya está logueado
         }
 
-        return view('auth.register');
+        $roles = Rol::all(); 
+        return view('auth.register', compact('roles'));
     }
 
     public function register(Request $request)
@@ -25,6 +27,7 @@ class RegistroController extends Controller
             'p_apellido_u' => 'required|string|max:25',
             'correo_u' => 'required|email|unique:tbl_usuario,correo_u',
             'contrasena' => 'required|string|min:6|confirmed',
+            'fk_id_roles' => 'required|exists:tbl_roles,pk_id_roles',
         ]);
 
         $usuario = Usuario::create([
@@ -35,7 +38,7 @@ class RegistroController extends Controller
             'correo_u' => $request->correo_u,
             'contrasena' => bcrypt($request->contrasena),
             'estado_usuario' => 1,
-            'fk_id_roles' => 2, // Rol por defecto
+            'fk_id_roles' => $request->fk_id_roles,
         ]);
 
         Auth::login($usuario);

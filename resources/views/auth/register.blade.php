@@ -58,6 +58,18 @@
                     <button type="button" class="btn btn-outline-secondary" id="togglePasswordConfirm">👁️</button>
                 </div>
             </div>
+
+            <div class="col-12 mb-3">
+                <label for="fk_id_roles" class="form-label">Rol</label>
+                <select name="fk_id_roles" id="fk_id_roles" class="form-select" required>
+                    <option value="">Seleccione un rol</option>
+                    @foreach ($roles as $rol)
+                        <option value="{{ $rol->pk_id_roles }}" {{ old('fk_id_roles') == $rol->pk_id_roles ? 'selected' : '' }}>
+                            {{ $rol->desc_rol }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
         <div class="d-flex justify-content-end gap-2">

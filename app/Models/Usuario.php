@@ -19,5 +19,10 @@ class Usuario extends Authenticatable
     public function getAuthPassword()
     {
         return $this->contrasena;
+
+    }
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'fk_id_roles', 'pk_id_roles');
     }
 }
